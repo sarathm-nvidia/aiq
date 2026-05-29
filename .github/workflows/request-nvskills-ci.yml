@@ -1,9 +1,18 @@
 name: Request NVSkills CI
 
+# Two trigger paths:
+#   1. Maintainer comments /nvskills-ci on a PR → dispatches validation
+#   2. nv-skills-ci[bot] pushes signature commit → re-validates signed state
+# Path filtering for skills/ changes is handled inside team-request.yml
+# via GitHub API (not paths: filter) to avoid silent skips on merge commits.
 on:
   issue_comment:
     types: [created]
   push:
+    branches:
+      - develop
+      - "release/**"
+      - "pull-request/[0-9]+"
 
 jobs:
   request:
